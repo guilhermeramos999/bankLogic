@@ -1,28 +1,16 @@
-const Pessoa = require("./Pessoa");
-const conn = require('../Infra/dao')
+const Conta = require("./Conta");
 
-class ContaCorrente extends Pessoa {
-    agencia;
-    conta;
+class ContaCorrente extends Conta {
 
-    constructor(nome, cpf, agencia) {
-        super(nome, cpf)
+    constructor(nome,cpf,data_nascimento,agencia) {
+        super(agencia,nome,data_nascimento,cpf)
+        this.nome = nome
+        this.cpf = cpf
+        this.idade = this.descobreIdade(data_nascimento)
         this.agencia = agencia
-        this.conta = "Teste"
+        this.conta = this.geraConta()
+        this.saldo = 0
     }
-
-    consultaConta(nome, cpf) {
-        conn.query(`SELECT * FROM pessoa WHERE nome = '${nome}' AND cpf = '${cpf}' LIMIT 1;`, function (err, result, fields) {
-            if (err) console.error(err)
-            if(!result){
-                return false
-            }
-            return result
-        })
-    }
-
 }
 
-const cc = new ContaCorrente("Guilherme",'12345678910','3378')
-
-console.log(cc.consultaConta('Guilherme','12345678910'))
+module.exports = ContaCorrente
